@@ -26,6 +26,7 @@ RUN /build_zlib.sh
 
 ADD scripts/build_openssl.sh /
 RUN /build_openssl.sh
+ENV OPENSSL_HOME /usr
 
 ADD scripts/build_boost.sh /
 RUN /build_boost.sh

@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-OPENSSL_VERSION="1.0.2q"
+OPENSSL_VERSION="1.1.1j"
 NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
 
 wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
