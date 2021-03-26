@@ -19,7 +19,7 @@
 # Build upon the scripts in https://github.com/matthew-brett/manylinux-builds
 # * Copyright (c) 2013-2016, Matt Terry and Matthew Brett (BSD 2-clause)
 
-PYTHON_VERSIONS="${PYTHON_VERSIONS:-3.5,16 3.6,16, 3.7,16}"
+PYTHON_VERSIONS="${PYTHON_VERSIONS:-3.6,16, 3.7,16}"
 
 source /multibuild/manylinux_utils.sh
 
@@ -33,22 +33,20 @@ for PYTHON_TUPLE in ${PYTHON_VERSIONS}; do
     PATH="$PATH:$(cpython_path $PYTHON ${U_WIDTH})"
 
     echo "=== (${PYTHON}, ${U_WIDTH}) Installing build dependencies ==="
-    $PIP install "numpy==1.14.5" "cython==0.29.3" "virtualenv==16.3.0"
+    $PIP install "numpy==1.19.0" "cython==0.29.22" "virtualenv==20.4.3"
     # Pandas requires numpy and cython
-    $PIP install "pandas==0.24.0"
+    $PIP install "pandas==1.1.0"
 
-    # TensorFlow is not supported for Python 2.7 with unicode width 16 or with Python 3.7
+    # TensorFlow is not supported for Python 2.7 with unicode width 16
     if [ $PYTHON != "2.7" ] || [ $U_WIDTH = "32" ]; then
-      if [ $PYTHON != "3.7" ]; then
-        $PIP install "tensorflow==1.11.0" "Keras-Preprocessing==1.0.5"
-      fi
+      $PIP install "tensorflow==1.11.0" "Keras-Preprocessing==1.1.2"
     fi
 
 
     echo "=== (${PYTHON}, ${U_WIDTH}) Preparing virtualenv for tests ==="
     "$(cpython_path $PYTHON ${U_WIDTH})/bin/virtualenv" -p ${PYTHON_INTERPRETER} --no-download /venv-test-${PYTHON}-${U_WIDTH}
     source /venv-test-${PYTHON}-${U_WIDTH}/bin/activate
-    pip install pytest hypothesis 'numpy==1.14.5' 'pandas==0.24.0'
+    pip install pytest hypothesis 'numpy==1.19.0' 'pandas==1.1.0'
     deactivate
 done
 
