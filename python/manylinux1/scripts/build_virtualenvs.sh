@@ -37,12 +37,6 @@ for PYTHON_TUPLE in ${PYTHON_VERSIONS}; do
     # Pandas requires numpy and cython
     $PIP install "pandas==1.1.0"
 
-    # TensorFlow is not supported for Python 2.7 with unicode width 16
-    if [ $PYTHON != "2.7" ] || [ $U_WIDTH = "32" ]; then
-      $PIP install "tensorflow==1.11.0" "Keras-Preprocessing==1.1.2"
-    fi
-
-
     echo "=== (${PYTHON}, ${U_WIDTH}) Preparing virtualenv for tests ==="
     "$(cpython_path $PYTHON ${U_WIDTH})/bin/virtualenv" -p ${PYTHON_INTERPRETER} --no-download /venv-test-${PYTHON}-${U_WIDTH}
     source /venv-test-${PYTHON}-${U_WIDTH}/bin/activate
