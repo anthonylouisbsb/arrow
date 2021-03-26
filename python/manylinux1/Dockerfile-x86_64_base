@@ -17,7 +17,7 @@
 FROM quay.io/pypa/manylinux1_x86_64:latest
 
 # Install dependencies
-RUN yum install -y xz java-1.7.0-openjdk-devel ccache flex wget python-devel gcc && yum clean all
+RUN yum install -y xz java-1.7.0-openjdk-devel ccache flex wget && yum clean all
 
 ENV JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk/
 
@@ -79,9 +79,6 @@ ENV GLOG_HOME /usr
 
 WORKDIR /
 RUN git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout 03950c9a7feb09d215f82d6563c4ffd91274a1e1
-
-ADD scripts/build_virtualenvs.sh /
-RUN /build_virtualenvs.sh
 
 ADD scripts/build_llvm.sh /
 RUN /build_llvm.sh
