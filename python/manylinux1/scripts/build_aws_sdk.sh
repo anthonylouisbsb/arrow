@@ -16,16 +16,33 @@
 # specific language governing permissions and limitations
 # under the License.
 
-export SNAPPY_VERSION="1.1.8"
-curl -sL "https://github.com/google/snappy/archive/${SNAPPY_VERSION}.tar.gz" -o snappy-${SNAPPY_VERSION}.tar.gz
-tar xf snappy-${SNAPPY_VERSION}.tar.gz
-pushd snappy-${SNAPPY_VERSION}
-CXXFLAGS='-DNDEBUG -O2' cmake -GNinja \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DCMAKE_POSITION_INDEPENDENT_CODE=1 \
+export AWS_SDK_VERSION="1.7.356"
+# Avoid compilation error due to a spurious warning
+export CFLAGS="-Wno-unused-parameter"
+export PREFIX="/usr/local"
+
+curl -sL "https://github.com/aws/aws-sdk-cpp/archive/${AWS_SDK_VERSION}.tar.gz" -o aws-sdk-cpp-${AWS_SDK_VERSION}.tar.gz
+tar xf aws-sdk-cpp-${AWS_SDK_VERSION}.tar.gz
+pushd aws-sdk-cpp-${AWS_SDK_VERSION}
+
+mkdir build
+pushd build
+
+cmake .. -GNinja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_PREFIX_PATH=${CURL_HOME} \
+    -DCMAKE_C_FLAGS=${CFLAGS} \
+    -DCMAKE_CXX_FLAGS=${CFLAGS} \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    -DBUILD_ONLY='s3;core;transfer;config;identity-management;sts' \
     -DBUILD_SHARED_LIBS=OFF \
-    -DSNAPPY_BUILD_TESTS=OFF \
-    .
+    -DENABLE_CURL_LOGGING=ON \
+    -DENABLE_UNITY_BUILD=ON \
+    -DENABLE_TESTING=OFF
+
 ninja install
+
 popd
-rm -rf snappy-${SNAPPY_VERSION}.tar.gz snappy-${SNAPPY_VERSION}
+popd
+
+rm -r aws-sdk-cpp-${AWS_SDK_VERSION}.tar.gz aws-sdk-cpp-${AWS_SDK_VERSION}

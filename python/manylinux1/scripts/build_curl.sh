@@ -16,15 +16,40 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# XXX OpenSSL 1.1.1 needs Perl 5.10 to compile, so stick to 1.0.x
-OPENSSL_VERSION="1.0.2u"
+export CURL_VERSION="7.70.0"
+# Install our curl in a separate directory to distinguish from the already
+# existing /usr/local/libcurl.so (used by git tools)
+export PREFIX="/opt/curl"
+
 NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
 
-wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
-tar xf openssl-${OPENSSL_VERSION}.tar.gz
-pushd openssl-${OPENSSL_VERSION}
-./config -fpic shared --prefix=/usr
+curl -sL "http://curl.haxx.se/download/curl-${CURL_VERSION}.tar.bz2" -o curl-${CURL_VERSION}.tar.bz2
+tar xf curl-${CURL_VERSION}.tar.bz2
+pushd curl-${CURL_VERSION}
+
+./configure \
+    --prefix=${PREFIX} \
+    --disable-ldap \
+    --disable-ldaps \
+    --disable-rtsp \
+    --disable-telnet \
+    --disable-tftp \
+    --disable-pop3 \
+    --disable-imap \
+    --disable-smb \
+    --disable-smtp \
+    --disable-gopher \
+    --disable-mqtt \
+    --disable-manual \
+    --disable-shared \
+    --without-ca-bundle \
+    --without-ca-path \
+    --with-ssl=/usr/local \
+    --with-zlib=/usr/local
+
 make -j${NCORES}
 make install
+
 popd
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
+
+rm -r curl-${CURL_VERSION}.tar.bz2 curl-${CURL_VERSION}

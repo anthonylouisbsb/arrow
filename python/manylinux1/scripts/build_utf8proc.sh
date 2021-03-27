@@ -16,15 +16,23 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# XXX OpenSSL 1.1.1 needs Perl 5.10 to compile, so stick to 1.0.x
-OPENSSL_VERSION="1.0.2u"
 NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
+export UTF8PROC_VERSION="2.5.0"
+export PREFIX="/usr/local"
 
-wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
-tar xf openssl-${OPENSSL_VERSION}.tar.gz
-pushd openssl-${OPENSSL_VERSION}
-./config -fpic shared --prefix=/usr
-make -j${NCORES}
-make install
+curl -sL "https://github.com/JuliaStrings/utf8proc/archive/v${UTF8PROC_VERSION}.tar.gz" -o utf8proc-$UTF8PROC_VERSION}.tar.gz
+tar xf utf8proc-$UTF8PROC_VERSION}.tar.gz
+
+pushd utf8proc-${UTF8PROC_VERSION}
+mkdir build
+pushd build
+cmake .. -GNinja \
+  -DBUILD_SHARED_LIBS=OFF \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=${PREFIX}
+
+ninja install
 popd
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
+popd
+
+rm -rf utf8proc-${UTF8PROC_VERSION}.tar.gz utf8proc-${UTF8PROC_VERSION}

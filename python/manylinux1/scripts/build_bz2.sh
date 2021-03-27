@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+!/bin/bash -ex
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,15 +16,15 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# XXX OpenSSL 1.1.1 needs Perl 5.10 to compile, so stick to 1.0.x
-OPENSSL_VERSION="1.0.2u"
 NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
+export BZ2_VERSION="1.0.8"
+export CFLAGS="-Wall -Winline -O2 -fPIC -D_FILE_OFFSET_BITS=64"
 
-wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
-tar xf openssl-${OPENSSL_VERSION}.tar.gz
-pushd openssl-${OPENSSL_VERSION}
-./config -fpic shared --prefix=/usr
-make -j${NCORES}
-make install
+curl -sL "https://www.sourceware.org/pub/bzip2/bzip2-${BZ2_VERSION}.tar.gz" -o bzip2-${BZ2_VERSION}.tar.gz
+tar xf bzip2-${BZ2_VERSION}.tar.gz
+
+pushd bzip2-${BZ2_VERSION}
+make PREFIX=/usr/local CFLAGS="$CFLAGS" install -j${NCORES}
 popd
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
+
+rm -rf bzip2-${BZ2_VERSION}.tar.gz bzip2-${BZ2_VERSION}

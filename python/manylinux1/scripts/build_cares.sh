@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+!/bin/bash -ex
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,15 +16,19 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# XXX OpenSSL 1.1.1 needs Perl 5.10 to compile, so stick to 1.0.x
-OPENSSL_VERSION="1.0.2u"
-NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
+export CARES_VERSION="1.16.1"
+export CFLAGS="-fPIC"
+export PREFIX="/usr/local"
+curl -sL "https://c-ares.haxx.se/download/c-ares-$CARES_VERSION.tar.gz" -o c-ares-${CARES_VERSION}.tar.gz
+tar xf c-ares-${CARES_VERSION}.tar.gz
+pushd c-ares-${CARES_VERSION}
 
-wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
-tar xf openssl-${OPENSSL_VERSION}.tar.gz
-pushd openssl-${OPENSSL_VERSION}
-./config -fpic shared --prefix=/usr
-make -j${NCORES}
-make install
+cmake -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+      -DCARES_STATIC=ON \
+      -DCARES_SHARED=OFF \
+      -DCMAKE_C_FLAGS=${CFLAGS} \
+      -GNinja .
+ninja install
 popd
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
+rm -rf c-ares-${CARES_VERSION}.tar.gz c-ares-${CARES_VERSION}

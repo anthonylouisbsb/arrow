@@ -16,20 +16,34 @@
 # specific language governing permissions and limitations
 # under the License.
 
-export GLOG_VERSION="0.4.0"
+export GRPC_VERSION="1.29.1"
+export CFLAGS="-fPIC -DGPR_MANYLINUX1=1"
 export PREFIX="/usr/local"
-curl -sL "https://github.com/google/glog/archive/v${GLOG_VERSION}.tar.gz" -o glog-${GLOG_VERSION}.tar.gz
-tar xf glog-${GLOG_VERSION}.tar.gz
-pushd glog-${GLOG_VERSION}
+
+curl -sL "https://github.com/grpc/grpc/archive/v${GRPC_VERSION}.tar.gz" -o grpc-${GRPC_VERSION}.tar.gz
+tar xf grpc-${GRPC_VERSION}.tar.gz
+pushd grpc-${GRPC_VERSION}
 
 cmake -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-      -DCMAKE_POSITION_INDEPENDENT_CODE=1 \
       -DBUILD_SHARED_LIBS=OFF \
-      -DBUILD_TESTING=OFF \
-      -DWITH_GFLAGS=OFF \
+      -DCMAKE_C_FLAGS="${CFLAGS}" \
+      -DCMAKE_CXX_FLAGS="${CFLAGS}" \
+      -DgRPC_BUILD_CSHARP_EXT=OFF \
+      -DgRPC_BUILD_GRPC_CSHARP_PLUGIN=OFF \
+      -DgRPC_BUILD_GRPC_NODE_PLUGIN=OFF \
+      -DgRPC_BUILD_GRPC_OBJECTIVE_C_PLUGIN=OFF \
+      -DgRPC_BUILD_GRPC_PHP_PLUGIN=OFF \
+      -DgRPC_BUILD_GRPC_PYTHON_PLUGIN=OFF \
+      -DgRPC_BUILD_GRPC_RUBY_PLUGIN=OFF \
+      -DgRPC_ABSL_PROVIDER=package \
+      -DgRPC_CARES_PROVIDER=package \
+      -DgRPC_GFLAGS_PROVIDER=package \
+      -DgRPC_PROTOBUF_PROVIDER=package \
+      -DgRPC_SSL_PROVIDER=package \
+      -DgRPC_ZLIB_PROVIDER=package \
+      -DOPENSSL_USE_STATIC_LIBS=ON \
       -GNinja .
 ninja install
 popd
-rm -rf glog-${GLOG_VERSION}.tar.gz glog-${GLOG_VERSION}
-
+rm -rf grpc-${GRPC_VERSION}.tar.gz grpc-${GRPC_VERSION}

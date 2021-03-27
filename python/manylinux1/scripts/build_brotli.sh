@@ -16,7 +16,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-export BROTLI_VERSION="0.6.0"
+export BROTLI_VERSION="1.0.7"
 curl -sL "https://github.com/google/brotli/archive/v${BROTLI_VERSION}.tar.gz" -o brotli-${BROTLI_VERSION}.tar.gz
 tar xf brotli-${BROTLI_VERSION}.tar.gz
 pushd brotli-${BROTLI_VERSION}
@@ -25,8 +25,7 @@ pushd build
 cmake -DCMAKE_BUILD_TYPE=release \
     "-DCMAKE_CXX_FLAGS=-fPIC" \
     "-DCMAKE_C_FLAGS=-fPIC" \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_INSTALL_PREFIX=/usr/local \
     -GNinja \
     ..
 ninja install
