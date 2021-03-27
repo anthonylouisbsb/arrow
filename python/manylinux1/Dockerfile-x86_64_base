@@ -26,7 +26,7 @@ RUN /build_zlib.sh
 
 ADD scripts/build_openssl.sh /
 RUN /build_openssl.sh
-ENV OPENSSL_HOME /usr
+ENV OPENSSL_HOME /usr/local
 
 # Install cmake manylinux1 package
 ADD scripts/install_cmake.sh /
