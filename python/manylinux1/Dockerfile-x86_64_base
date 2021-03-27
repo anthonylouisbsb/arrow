@@ -95,7 +95,7 @@ ENV GLOG_HOME /usr/local
 WORKDIR /
 RUN git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout 03950c9a7feb09d215f82d6563c4ffd91274a1e1
 
-ENV llvm 8
+ENV llvm 10
 ADD scripts/build_llvm.sh /
 RUN /build_llvm.sh ${llvm}
 
