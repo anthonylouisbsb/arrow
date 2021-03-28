@@ -20,7 +20,7 @@ source /multibuild/manylinux_utils.sh
 
 # Versions more recent of llvm and clang are not compatible with the
 # kernel version of the docker version
-curl -sL https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/llvm-8.0.1.src.tar.xz
 unxz llvm-8.0.1.src.tar.xz
 tar xf llvm-8.0.1.src.tar
 pushd llvm-8.0.1.src
@@ -49,7 +49,7 @@ popd
 rm -rf llvm-8.0.1.src.tar.xz llvm-8.0.1.src.tar llvm-8.0.1.src
 
 # clang is only used to precompile Gandiva bitcode
-curl -sL https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/cfe-8.0.1.src.tar.xz
+wget https://github.com/llvm/llvm-project/releases/download/llvmorg-8.0.1/cfe-8.0.1.src.tar.xz
 unxz cfe-8.0.1.src.tar.xz
 tar xf cfe-8.0.1.src.tar
 pushd cfe-8.0.1.src
