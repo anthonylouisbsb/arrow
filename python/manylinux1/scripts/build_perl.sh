@@ -16,14 +16,12 @@
 # specific language governing permissions and limitations
 # under the License.
 
-OPENSSL_VERSION="1.1.1j"
-NCORES=$(($(grep -c ^processor /proc/cpuinfo) + 1))
-
-wget --no-check-certificate https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz -O openssl-${OPENSSL_VERSION}.tar.gz
-tar xf openssl-${OPENSSL_VERSION}.tar.gz
-pushd openssl-${OPENSSL_VERSION}
-./config -fpic shared --prefix=/usr
-make -j${NCORES}
+wget http://www.cpan.org/src/5.0/perl-5.10.1.tar.gz
+tar -xzf perl-5.10.1.tar.gz
+pushd perl-5.10.1
+./Configure -des -Dprefix=/usr
+make
 make install
 popd
-rm -rf openssl-${OPENSSL_VERSION}.tar.gz openssl-${OPENSSL_VERSION}
+
+rm -rf perl-5.10.1.tar.gz perl-5.10.1

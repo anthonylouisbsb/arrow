@@ -24,6 +24,9 @@ ENV JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk/
 ADD scripts/build_zlib.sh /
 RUN /build_zlib.sh
 
+ADD scripts/build_perl.sh /
+RUN /build_perl.sh
+
 ADD scripts/build_openssl.sh /
 RUN /build_openssl.sh
 ENV OPENSSL_HOME /usr/local
