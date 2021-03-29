@@ -31,6 +31,9 @@ ADD scripts/build_openssl.sh /
 RUN /build_openssl.sh
 ENV OPENSSL_HOME /usr/local
 
+ADD scripts/build_wget.sh /
+RUN /build_wget.sh
+
 # Install cmake manylinux1 package
 ADD scripts/install_cmake.sh /
 RUN /install_cmake.sh
