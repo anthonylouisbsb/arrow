@@ -44,7 +44,8 @@ pushd curl-${CURL_VERSION}
     --disable-shared \
     --without-ca-bundle \
     --without-ca-path \
-    --with-ssl=/usr/include/openssl \
+    --with-ssl \
+    --with-ssl-prefix=/usr/local/ssl \
     --with-zlib=/usr/local
 
 make -j${NCORES}
