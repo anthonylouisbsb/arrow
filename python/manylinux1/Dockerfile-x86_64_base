@@ -117,3 +117,4 @@ RUN /build_bz2.sh
 
 ADD scripts/build_utf8proc.sh /
 RUN /build_utf8proc.sh
+ENV UTF8PROC_HOME /usr/local
